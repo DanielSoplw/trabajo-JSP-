@@ -1,0 +1,7 @@
+package com.empresa.test.modelo;
+
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
+
+}
