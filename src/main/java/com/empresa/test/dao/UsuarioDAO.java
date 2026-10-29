@@ -19,12 +19,12 @@ public class UsuarioDAO {
 	private static final String SELECT_USUARIO_BY_ID = "SELECT * FROM usuario WHERE id = ?;";
 	private static final String SELECT_ALL_USUARIO = "SELECT * FROM usuario;";
 
-	private UsuarioDAO() {
+	public UsuarioDAO() {
 		
 		this.conexion = conexion.getConexion();
 	}
 	
-	public void insert(Usuario usuario) {
+	public void insert(Usuario usuario) throws SQLException {
 		try {
 			
 			PreparedStatement preparedStatement = conexion.setPreparedStatement(INSERT_USUARIO_SQL);
@@ -39,7 +39,7 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public void Delete(int id) {
+	public void Delete(int id) throws SQLException {
 		try {
 			
 			PreparedStatement preparedStatement = conexion.setPreparedStatement(DELETE_USUARIO_SQL);
@@ -52,7 +52,7 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public void Update(Usuario usuario) {
+	public void Update(Usuario usuario) throws SQLException {
 		try {
 			
 			PreparedStatement preparedStatement = conexion.setPreparedStatement(UPDATE_USUARIO_SQL);
@@ -68,7 +68,7 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public List<Usuario> selectAll() {
+	public List<Usuario> selectAll() throws SQLException {
 		
 		List <Usuario> usuarios = new ArrayList<>();
 		
@@ -91,6 +91,32 @@ public class UsuarioDAO {
 		}
 		
 		return usuarios;
+		
+	}
+	
+	public Usuario select(int id) {
+		
+		Usuario usuario = null;
+		
+		try {
+			PreparedStatement preparedStatement = conexion.setPreparedStatement(SELECT_USUARIO_BY_ID);
+			preparedStatement.setInt(1, id);
+			
+			ResultSet rs = conexion.query();
+			
+			while(rs.next()) {
+				String nombre = rs.getString("nombre");
+				String email = rs.getString("email");
+				String pais = rs.getString("pais");
+				usuario = new Usuario(id, nombre, email, pais);
+				
+			}
+			
+		} catch(SQLException e) {
+			
+		}
+		
+		return usuario;
 		
 	}
 	

@@ -18,5 +18,13 @@ public class Usuario implements Serializable {
 	private String email;
 	
 	private String pais;
+
+	public Usuario(String nombre, String email, String pais) {
+		this.nombre = nombre;
+		this.email = email;
+		this.pais = pais;
+	}
+	
+	
 	
 }
