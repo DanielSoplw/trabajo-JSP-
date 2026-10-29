@@ -1,0 +1,36 @@
+# ===== Maven / compilados =====
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+
+# ===== Eclipse (config local de tu IDE) =====
+.classpath
+.project
+.settings/
+.metadata/
+bin/
+tmp/
+.jsdtscope
+.springBeans
+
+# ===== Otros IDEs =====
+.idea/
+*.iml
+.vscode/
+nbproject/
+.nb-gradle/
+
+# ===== Logs, temporales y basura del sistema =====
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# ===== Servidor (Tomcat) / despliegue local =====
+.externalToolBuilders/
+Servers/
