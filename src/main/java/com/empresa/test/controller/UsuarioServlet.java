@@ -2,13 +2,15 @@ package com.empresa.test.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.empresa.test.dao.UsuarioDAO;
 import com.empresa.test.modelo.Usuario;
@@ -64,6 +66,7 @@ public class UsuarioServlet extends HttpServlet {
 				actualizarUsuario(request, response);
 				break;
 			default:
+				listarUsuario(request, response);
 				break;
 			}
 		} catch (SQLException e) {
@@ -81,7 +84,7 @@ public class UsuarioServlet extends HttpServlet {
 	}
 	
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
+			throws ServletException, ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("usuario.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -107,8 +110,47 @@ public class UsuarioServlet extends HttpServlet {
 		
 		request.setAttribute("usuario", usuarioActual);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("usuario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("user.jsp");
 		dispatcher.forward(request, response);
 	}
+	
+	private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, SQLException, IOException {
+		
+		int id = Integer.parseInt(request.getParameter("id"));
+		
+		String nombre = request.getParameter("nombre");
+		String email = request.getParameter("email");
+		String pais = request.getParameter("pais");
+		
+		Usuario usuario = new Usuario(id, nombre, email, pais);
+		
+		userDAO.Update(usuario);
+		
+		response.sendRedirect("list");
+	}
+	
+	private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, SQLException, IOException {
+		
+		int id = Integer.parseInt(request.getParameter("id"));
+		
+		userDAO.Delete(id);
+		
+		response.sendRedirect("list");
+	}
+	
+	private void listarUsuario(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, SQLException, IOException {
+		
+		List <Usuario> listUsuarios = userDAO.selectAll();
+		
+		request.setAttribute("listUsuarios", listUsuarios);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("usuariolist.jsp");
+		dispatcher.forward(request, response);
+		
+	}
+
 
 }
